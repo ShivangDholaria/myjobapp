@@ -12,4 +12,5 @@ public interface jobService {
     ResponseEntity<String> createJob(Job job);
     ResponseEntity<Job> getJobById(Long id);
     ResponseEntity<String> deleteJobById(Long id);
+    ResponseEntity<String> updateJobById(Long id, Job j);
 }

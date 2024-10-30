@@ -62,4 +62,23 @@ public class jobServiceImpl implements jobService{
         return new ResponseEntity<>("Job not found", HttpStatus.NOT_FOUND);
     }
 
+    @Override
+    public ResponseEntity<String> updateJobById(Long id, Job job) {
+        
+        for(Job j : jobs) {
+            if(j.getId().equals(id))
+            {
+                j.setDescription(job.getDescription());
+                j.setLocation(job.getLocation());
+                j.setMaxSal(job.getMaxSal());
+                j.setMinSal(job.getMinSal());
+                j.setTitle(job.getTitle());
+
+                return ResponseEntity.ok().body("Job updated successfully");
+            }
+        }
+        
+        return ResponseEntity.notFound().build();
+    }
+
 }
