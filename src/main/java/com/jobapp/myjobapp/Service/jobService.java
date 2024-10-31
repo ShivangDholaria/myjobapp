@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.jobapp.myjobapp.model.Job;
 
-public interface jobService {
+public interface JobService {
 
     ResponseEntity<List<Job>> findAll();
     ResponseEntity<String> createJob(Job job);

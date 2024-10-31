@@ -1,81 +1,73 @@
 package com.jobapp.myjobapp.Impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.jobapp.myjobapp.Service.jobService;
+import com.jobapp.myjobapp.Service.JobService;
 import com.jobapp.myjobapp.model.Job;
+import com.jobapp.myjobapp.repository.JobRepository;
 
 @Service
-public class jobServiceImpl implements jobService{
+public class JobServiceImpl implements JobService{
 
-    private List<Job> jobs = new ArrayList<>();
-    private Long nextId = 1L;
+    private JobRepository jobRepository;
+
+    public JobServiceImpl(JobRepository jobRepository) {
+        this.jobRepository = jobRepository;
+    }
 
     @Override
     public ResponseEntity<List<Job>> findAll() {
-        return ResponseEntity.ok(jobs);
+        return ResponseEntity.ok(jobRepository.findAll());
     }
 
     @Override
     public ResponseEntity<String> createJob(Job job) {
         
-        if(job.getId() == null) {
-            job.setId(++nextId);
-        }
-        else {
-            for(Job j : jobs)
-            {
-                if(j.getId() == job.getId())
-                    job.setId(++nextId);
-            }
-        }
-        jobs.add(job);
-
+        jobRepository.save(job);
         return new ResponseEntity<>("Job created", HttpStatus.CREATED);
+
     }
 
     @Override
     public ResponseEntity<Job> getJobById(Long id) {
         
-        for(Job j : jobs)
-            if(j.getId().equals(id))
-                return new ResponseEntity<>(j, HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(jobRepository.findById(id).isPresent())
+            return new ResponseEntity<>(jobRepository.findById(id).get(), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<String> deleteJobById(Long id) {
-        for(Job j : jobs)
-        {
-            if(j.getId().equals(id))
-            {
-                jobs.remove(j);
-                return new ResponseEntity<>("Job removed successfully", HttpStatus.OK);
-            }
+        
+        try {
+            jobRepository.deleteById(id);
+            return new ResponseEntity<>("Job removed successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Job not found", HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>("Job not found", HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<String> updateJobById(Long id, Job job) {
         
-        for(Job j : jobs) {
-            if(j.getId().equals(id))
-            {
-                j.setDescription(job.getDescription());
-                j.setLocation(job.getLocation());
-                j.setMaxSal(job.getMaxSal());
-                j.setMinSal(job.getMinSal());
-                j.setTitle(job.getTitle());
+        Optional<Job> joboOptional = jobRepository.findById(id);
 
-                return ResponseEntity.ok().body("Job updated successfully");
-            }
+        if(joboOptional.isPresent())
+        {
+            Job j = joboOptional.get();
+            j.setDescription(job.getDescription());
+            j.setLocation(job.getLocation());
+            j.setMaxSal(job.getMaxSal());
+            j.setMinSal(job.getMinSal());
+            j.setTitle(job.getTitle());
+            jobRepository.save(j);
+            return ResponseEntity.ok().body("Job updated successfully");
         }
         
         return ResponseEntity.notFound().build();

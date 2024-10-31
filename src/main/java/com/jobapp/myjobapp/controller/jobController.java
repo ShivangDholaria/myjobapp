@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobapp.myjobapp.Service.jobService;
+import com.jobapp.myjobapp.Service.JobService;
 import com.jobapp.myjobapp.model.Job;
 
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/jobs")
-public class jobController {   
+public class JobController {   
 
-    private jobService js;
+    private JobService js;
     
-    public jobController(jobService js) {
+    public JobController(JobService js) {
         this.js = js;
     }
 
