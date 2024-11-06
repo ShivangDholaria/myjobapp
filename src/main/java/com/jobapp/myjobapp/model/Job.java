@@ -4,10 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Job-Table")
+@Table(name = "job_table")
 public class Job {
 
     @Id
@@ -19,6 +20,9 @@ public class Job {
     private String maxSal;
     private String location;
     
+    @ManyToOne
+    private Company company;
+
     public Job() {    
     }
 
@@ -30,6 +34,7 @@ public class Job {
         this.maxSal = maxSal;
         this.location = location;
     }
+
 
 
     public Long getId() {
@@ -89,6 +94,14 @@ public class Job {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
     
 }

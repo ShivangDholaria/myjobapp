@@ -50,8 +50,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public ResponseEntity<String> deleteCompanyById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCompanyById'");
+        
+        if(companyRepository.existsById(id)) {
+            companyRepository.deleteById(id);
+            return new ResponseEntity<>("Copmany removed successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
