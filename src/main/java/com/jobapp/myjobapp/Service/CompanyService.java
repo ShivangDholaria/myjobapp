@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import com.jobapp.myjobapp.model.Company;
 
 public interface CompanyService {
-    List<Company> findAll();
+    ResponseEntity<List<Company>> findAll();
     ResponseEntity<Company> getCompanyById(Long id);
     ResponseEntity<String> addCompany(Company company);
     ResponseEntity<String> deleteCompanyById(Long id);

@@ -30,12 +30,12 @@ public class CompanyController {
     }
 
     @GetMapping("/")
-    public List<Company> getCompanies() {
+    public ResponseEntity<List<Company>> getCompanies() {
         return companyService.findAll();
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<String> addCompany(@PathVariable String id, @RequestBody Company company) {
+    @PostMapping("/")
+    public ResponseEntity<String> addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
     }
  

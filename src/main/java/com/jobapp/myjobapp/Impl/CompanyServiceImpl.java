@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.jobapp.myjobapp.Service.CompanyService;
 import com.jobapp.myjobapp.model.Company;
-import com.jobapp.myjobapp.model.Job;
 import com.jobapp.myjobapp.repository.CompanyRepository;
 
 @Service
@@ -22,8 +21,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> findAll() {
-        return companyRepository.findAll();
+    public ResponseEntity<List<Company>> findAll() {
+        return new ResponseEntity<>(companyRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
@@ -39,13 +38,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public ResponseEntity<String> addCompany(Company company) {
-        if(companyRepository.findById(company.getId()).isPresent())
-            return ResponseEntity.badRequest().body("Company with id: " + company.getId() + " already present");
-        else
-        {
-            companyRepository.save(company);
-            return new ResponseEntity<>("Company with same id already exists", HttpStatus.NOT_ACCEPTABLE);
-        }
+        companyRepository.save(company);
+        return new ResponseEntity<>("Company added", HttpStatus.OK);
     }
 
     @Override

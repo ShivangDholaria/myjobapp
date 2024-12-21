@@ -24,7 +24,7 @@ public class Company {
     private List<Job> jobs;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "company")
     private List<Review> reviews;
 
     public Company() {
@@ -69,11 +69,5 @@ public class Company {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
-
-    
-    /**
-     * TODO:
-     * Define one to many relation for reviews
-     */
 
 }
